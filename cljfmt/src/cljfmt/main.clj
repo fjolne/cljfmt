@@ -194,7 +194,9 @@
 (defn -main [& args]
   (let [parsed-opts   (cli/parse-opts args cli-options)
         [cmd & paths] (:arguments parsed-opts)
-        options       (merge-default-options (:options parsed-opts))
+        options       (merge-default-options (merge
+                                               (:options parsed-opts)
+                                               {:indents ^:replace {#".*" [[:inner 0]]}}))
         paths         (or (seq paths) default-paths)]
     (if (:errors parsed-opts)
       (abort (:errors parsed-opts))
